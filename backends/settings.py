@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',
     'rest_framework',
+    "django_rest_passwordreset",
     'corsheaders',
     'django_celery_results',
 ]
