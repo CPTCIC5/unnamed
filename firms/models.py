@@ -71,7 +71,7 @@ class Entity(models.Model):
     firm= models.ForeignKey(Firm, on_delete=models.CASCADE)
     name= models.CharField(max_length=100)
 
-    industry_type=  models.IntegerField(choices=( (1, "Trading"), (2,"Manufacturing")))
+    industry_type=  models.IntegerField(choices=( (1, "Trading"), (2,"Manufacturing"), (3,"Service"), (4, "Others") ))
     entity_type= models.IntegerField(choices=( (1, "Huf"), (2,"Proprietary"), (3, "Partnership"), (4, "Corporation")  ))
     gstin= models.CharField(max_length=15 ,unique=True, blank=True, null=True)
     pan_number= models.CharField(max_length=10,blank=True, null=True)

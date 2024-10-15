@@ -4,8 +4,7 @@ from django.core.mail import send_mail
 from . import models
 from rest_framework.decorators import action
 from .serializers import FirmSerializer,CreateFirmSerialzer,CreateFirmInvite,EntitySerializer, CreateEntitySerializer
-from .models import create_firm_invite
-
+from .models import create_firm_invite, Firm
 # Create your views here.
 import os 
 
@@ -15,10 +14,10 @@ class FirmsViewSet(viewsets.ModelViewSet):
     serializer_class = FirmSerializer
 
     def get_queryset(self):
-        print(self.request.user.firms)
+        firm= (self.request.user.firms)
 
         # All the firms the request user is a member of
-        return self.request.user.firms
+        return Firm.objects.filter(pk=firm.pk)
     #https://xyz.com
     
     
