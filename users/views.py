@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import get_object_or_404
-
+from .permissions import UserViewSetPermissions
 #from workspaces.models import WorkSpaceInvite
 from . import models, serializers
 from firms.models import FirmInvite
@@ -79,7 +79,7 @@ class SignupView(APIView):
     
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserSerializer
-    #permission_classes = (UserViewSetPermissions,)
+    permission_classes = (UserViewSetPermissions,)
     queryset = User.objects.all().select_related("profile")
 
     def list(self, request, *args, **kwargs):
