@@ -5,9 +5,11 @@ from rest_framework import permissions, status, views, viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.contrib.auth import update_session_auth_hash
+from django.shortcuts import get_object_or_404
 
 #from workspaces.models import WorkSpaceInvite
 from . import models, serializers
+from firms.models import FirmInvite
 from django.contrib.auth.models import User
 
 class LoginView(APIView):
@@ -44,12 +46,34 @@ class SignupView(APIView):
     permission_classes= (permissions.AllowAny, )
 
     def post(self, request):
-        serializer= serializers.UserCreateSerializer(
-            data= request.data
-        )
+        # Initialize serializer first
+        serializer = serializers.UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED)
+
+        # Save the user
+        user = serializer.save()
+
+        # Handle invite code
+        invite_code = request.data.get("invite_code")
+        if invite_code:
+            invite = get_object_or_404(FirmInvite, invite_code=invite_code)
+
+            if not invite.accepted:
+                invite.firm.members.add(user)
+                invite.accepted = True
+                invite.save()
+            else:
+                user.delete()  # Rollback user creation
+                return Response({"detail": "Invite code already used"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Log the user in
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+
+        # Set response with cookie
+        response = Response(status=status.HTTP_201_CREATED)
+        response.set_cookie('loggedIn', 'true', httponly=True)
+
+        return response
     
 
     
