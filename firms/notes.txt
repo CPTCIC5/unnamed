@@ -1,0 +1,30 @@
+Need:-
+1. Carry forward(History)
+2. Human errors (Typos and Minor Mistakes)
+3. CBCCD Report- 
+
+1. SERVICE SECTOR:-
+  a. Income Expenditure A/c --> Net Reciepts -Reciepts, Types of Reciepts, Expenses - History,Types,etc. AI should tell additional expense from the history,
+  Indirect expenses- 
+  b. Balance Sheet- a. Capital and Labratory site -> capital- opening balance(last year), pnl- Income and Expenditure, LongTermLoan,ShortTermLoan
+  c. Asset- Fixed Asset - 1) Depreciable 
+                          2) Non-Depreciable
+                          3)Work-in-progress
+            NonCurrent Asset-
+                          1) Long term investment
+                          2) Long term advancement
+                          3)Security Deposits
+            Current Asset-
+                          1) Short term investment
+                          2) Short term advancement
+                          3) Sundry Debtors
+                          4) Closing Stock
+                          5) Cash and Bank
+
+
+2.   Trading
+    Quanity- 
+       Opening Stock  - <formula>
+       Closing Stock - <formula>
+    Reporting
+    
