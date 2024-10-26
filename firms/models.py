@@ -26,10 +26,6 @@ class Firm(models.Model):
     def __str__(self):
          return self.name
 
-    def clean(self):
-        super().clean()
-        self.website_url= self.website_url.lower()
-
     def save(self, *args, **kwargs):
         is_being_created = self._state.adding
         super().save(*args, **kwargs)
@@ -50,20 +46,6 @@ class Firm(models.Model):
             # https://stackoverflow.com/a/78053539/13953998
             transaction.on_commit(add_member)
 
-
-def create_firm_invite():
-    return get_random_string(10)
-
-class FirmInvite(models.Model):
-    firm= models.ForeignKey(Firm, on_delete=models.CASCADE)
-    invite_code= models.CharField(max_length=20, default=create_firm_invite)
-    email= models.EmailField(null=False, blank=False)
-    accepted= models.BooleanField(default=False)
-    created_at= models.DateTimeField(auto_now_add=True)
-
-
-    def __str__(self):
-        return str(self.firm)
 
 STATES_CHOICES = (
     (1,"Andhra Pradesh"),(2,"Arunachal Pradesh "),(3,"Assam"),
@@ -89,14 +71,11 @@ class Entity(models.Model):
     entity_type= models.IntegerField(choices=( (1, "HUF"), (2,"Proprietary"), (3, "Partnership"), (4, "Corporation")  ))
     gstin= models.CharField(max_length=15 ,unique=True, blank=True, null=True)
     pan_number= models.CharField(max_length=10,blank=True, null=True)
-    
-    state= models.IntegerField(choices=STATES_CHOICES)
+    city= models.CharField(max_length=100, blank=True, null=True)
+    zipcode= models.CharField(max_length=20, blank=True, null=True)
+    state= models.IntegerField(choices=STATES_CHOICES, blank=True, null=True)
     mailing_address= models.TextField()
     email= models.EmailField()
-
-
-    fy_beginning= models.DateField()
-    books_beginning= models.DateField()
 
     created_at= models.DateTimeField(auto_now_add=True)
      

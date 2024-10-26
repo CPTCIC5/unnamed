@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from users.serializers import UserSerializer
-from .models import Firm,Entity, FirmInvite
+from .models import Firm,Entity
 
 class CreateFirmSerialzer(serializers.ModelSerializer):
     class Meta:
@@ -14,21 +14,16 @@ class FirmSerializer(serializers.ModelSerializer):
         model = Firm
         fields = ['id', 'root_user', 'name', 'address', 'contact_number', 'email', 'website_url', 'members', 'created_at']
 
-class CreateFirmInvite(serializers.ModelSerializer):
-    class Meta:
-        model= FirmInvite
-        fields= ['email']
-
 
 
 class CreateEntitySerializer(serializers.ModelSerializer):
     class Meta:
         model= Entity
-        fields= ['firm', 'name', 'industry_type', 'entity_type', 'gstin', 'pan_number']
+        fields= ['firm', 'name', 'industry_type', 'entity_type', 'gstin', 'pan_number','city', 'zipcode']
 
 class EntitySerializer(serializers.ModelSerializer):
     firm= FirmSerializer()
 
     class Meta:
         model= Entity
-        fields= ['id','firm', 'name', 'industry_type', 'entity_type', 'gstin', 'pan_number', 'created_at']
+        fields= ['id','firm', 'name', 'industry_type', 'entity_type', 'gstin', 'pan_number','city', 'zipcode', 'created_at']

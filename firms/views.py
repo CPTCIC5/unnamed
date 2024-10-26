@@ -1,12 +1,9 @@
 from rest_framework import  viewsets,status,permissions
 from rest_framework.response import Response
-from django.core.mail import send_mail
 from . import models
-from rest_framework.decorators import action
-from .serializers import FirmSerializer,CreateFirmSerialzer,CreateFirmInvite,EntitySerializer, CreateEntitySerializer
-from .models import create_firm_invite, Firm
+from .serializers import FirmSerializer,CreateFirmSerialzer,EntitySerializer, CreateEntitySerializer
+from .models import Firm
 # Create your views here.
-import os 
 
 class FirmsViewSet(viewsets.ModelViewSet):
     # permission_classes = (WorkSpaceViewSetPermissions,)
@@ -45,35 +42,6 @@ class FirmsViewSet(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(self.get_serializer(new_instance).data)
-
-    @action(methods=("POST",), detail=True, url_path="create-invite")
-    def create_firm_invite(self, request, pk):
-        firm = self.get_object()
-        invite_code = create_firm_invite()
-
-
-        serializer = CreateFirmInvite(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(
-            firm=firm,
-            invite_code=invite_code
-            )
-        print(os.environ['EMAIL_HOST_USER'])
-
-
-        # Extract the email address from the validated data and send the email
-        recipient_email = serializer.validated_data.get("email")
-        print(recipient_email)
-
-        #sending mail
-        send_mail(
-            'Subject here',
-            f'Here is the message. Your code is {invite_code}',
-            os.environ['EMAIL_HOST_USER'],  # Sender's email address
-            [recipient_email],  # List of recipient email addresses as strings
-        )
-        
-        return Response(serializer.data,status=status.HTTP_201_CREATED)
     
 
 
